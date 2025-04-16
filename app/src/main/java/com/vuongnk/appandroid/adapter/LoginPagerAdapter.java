@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.vuongnk.appandroid.fragment.LoginFragment;
-
+import com.vuongnk.appandroid.fragment.RegisterFragment;
 public class LoginPagerAdapter extends FragmentStateAdapter {
     public LoginPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -19,7 +19,7 @@ public class LoginPagerAdapter extends FragmentStateAdapter {
         if (position == 0) {
             return new LoginFragment();
         }
-        return new LoginFragment();
+        return new RegisterFragment();
     }
 
     @Override

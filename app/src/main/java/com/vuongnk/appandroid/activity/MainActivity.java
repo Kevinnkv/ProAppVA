@@ -1,4 +1,4 @@
-package com.vuongnk.appandroid;
+package com.vuongnk.appandroid.activity;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.vuongnk.appandroid.R;
 
 public class MainActivity extends AppCompatActivity {
 

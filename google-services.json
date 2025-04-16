@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1055906226663",
+    "project_id": "app-ban-sach-fbb14",
+    "storage_bucket": "app-ban-sach-fbb14.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1055906226663:android:9176051a631bce7abd5d42",
+        "android_client_info": {
+          "package_name": "com.vuongnk.appandroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSjAqMPO0yKe0YA-PRZS5qlTwMg7qFEuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.vuongnk.appandroid.R;
-import com.vuongnk.appandroid.LoginPagerAdapter;
+import com.vuongnk.appandroid.adapter.LoginPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;

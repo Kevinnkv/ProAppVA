@@ -24,8 +24,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.vuongnk.appandroid.R;
-import com.vuongnk.appandroid.activity.AdminMainActivity;
-import com.vuongnk.appandroid.activity.MainActivity;
 import com.vuongnk.appandroid.dialog.CustomDialogFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,7 +37,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
@@ -225,7 +222,7 @@ public class LoginFragment extends Fragment {
 
         String role = dataSnapshot.child("role").getValue(String.class);
         saveUserRole(role);
-        navigateToMainActivity(role);
+        //navigateToMainActivity(role);
     }
 
     private void saveUserRole(String role) {
@@ -234,24 +231,24 @@ public class LoginFragment extends Fragment {
         sharedPreferences.edit().putString(ROLE_KEY, role).apply();
     }
 
-    private void navigateToMainActivity(String role) {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null && token != null) {
-            DatabaseReference userRef = FirebaseDatabase.getInstance()
-                    .getReference("users")
-                    .child(currentUser.getUid());
-
-            userRef.child("token").setValue(token);
-        }
-
-        // Determine target activity based on role
-        Class<?> targetActivity = "user".equals(role) ?
-                MainActivity.class : AdminMainActivity.class;
-
-        Intent intent = new Intent(requireActivity(), targetActivity);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
+//    private void navigateToMainActivity(String role) {
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if (currentUser != null && token != null) {
+//            DatabaseReference userRef = FirebaseDatabase.getInstance()
+//                    .getReference("users")
+//                    .child(currentUser.getUid());
+//
+//            userRef.child("token").setValue(token);
+//        }
+//
+//        // Determine target activity based on role
+//        Class<?> targetActivity = "user".equals(role) ?
+//                MainActivity.class : AdminMainActivity.class;
+//
+//        Intent intent = new Intent(requireActivity(), targetActivity);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//    }
 
     private void signInWithGoogle() {
         if (checkGooglePlayServices()) {
@@ -381,7 +378,7 @@ public class LoginFragment extends Fragment {
         String role = dataSnapshot.child("role").getValue(String.class);
         updateUserToken(firebaseUser.getUid());
         saveUserRole(role);
-        navigateToMainActivity(role);
+        //navigateToMainActivity(role);
     }
 
     private void updateUserToken(String uid) {
@@ -400,7 +397,7 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         saveUserRole("user");
-                        navigateToMainActivity("user");
+                        //navigateToMainActivity("user");
                     } else {
                         showToast("Không thể tạo hồ sơ người dùng: " + task.getException().getMessage());
                     }
