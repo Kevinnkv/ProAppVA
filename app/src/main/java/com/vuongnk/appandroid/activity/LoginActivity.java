@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -69,8 +70,10 @@ public class LoginActivity extends AppCompatActivity {
         // Kiểm tra người dùng hiện tại
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+//            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+            Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+
         }
     }
 }
