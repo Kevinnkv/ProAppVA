@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.Ban_sach" parent="Theme.Material3.DayNight.NoActionBar" >
+        <!-- Đặt màu nền của Splash Screen thành trong suốt -->
+        <item name="android:windowSplashScreenBackground">@android:color/transparent</item>
+
+        <!-- Xóa biểu tượng của Splash Screen -->
+        <item name="android:windowSplashScreenAnimatedIcon">@null</item>
+
+        <!-- Tắt hiệu ứng animation của Splash Screen -->
+        <item name="android:windowSplashScreenAnimationDuration">0</item>
+
+        <!-- Xóa branding image (nếu có) -->
+        <item name="android:windowSplashScreenBrandingImage">@null</item>
+    </style>
+</resources>

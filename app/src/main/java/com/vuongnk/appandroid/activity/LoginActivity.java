@@ -21,6 +21,9 @@ public class LoginActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private LoginPagerAdapter pagerAdapter;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener authListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,17 @@ public class LoginActivity extends AppCompatActivity {
                 hideKeyboard();
             }
         });
+
+        // cuc thêm phần khởi tạo cho authListener để vào đăng nhập ở ngay trong hàm này
+        // Khởi tạo FirebaseAuth và AuthStateListener
+        mAuth = FirebaseAuth.getInstance();
+        authListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+        };
     }
 
     private void hideKeyboard() {
@@ -64,16 +78,33 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+  //  @Override
+//    protected void onStart() {
+//        super.onStart();
+//        // Kiểm tra người dùng hiện tại
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        if (currentUser != null) {
+////            startActivity(new Intent(this, MainActivity.class));
+////            finish();
+//            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+//            //Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+//
+//        }
+//    }
+
+    // cuc code thêm 2 hàm dưới này, nếu Thương làm thêm SharePreference thì có thể bỏ 2 hàm dưới và phần c@Override
     @Override
     protected void onStart() {
         super.onStart();
-        // Kiểm tra người dùng hiện tại
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-//            startActivity(new Intent(this, MainActivity.class));
-//            finish();
-            Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+        mAuth.addAuthStateListener(authListener);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (authListener != null) {
+            mAuth.removeAuthStateListener(authListener);
         }
     }
 }
