@@ -79,4 +79,9 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
 
+    //bragde
+    implementation("com.nex3z:notification-badge:1.0.4")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+
 }
