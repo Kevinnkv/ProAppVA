@@ -67,16 +67,65 @@ public class LoginFragment extends Fragment {
     private TextView tvAdminEmail, tvHotline;
     private String token;
 
+    // Sử dụng google sign in đang bị lỗi -> cuc check
+    //   @Override
+//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        View view = inflater.inflate(R.layout.fragment_login, container, false);
+//
+//        initializeComponents(view);
+//        setupGoogleSignIn();
+//        setupClickListeners();
+//
+//        return view;
+//    }
+
+  // cuc -> code 3 hàm đầu tiên ở đây
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        initializeComponents(view);
-        setupGoogleSignIn();
-        setupClickListeners();
+        etEmail = view.findViewById(R.id.et_email);
+        etPassword = view.findViewById(R.id.et_password);
+        btnLogin = view.findViewById(R.id.btn_login);
+        progressBar = view.findViewById(R.id.progress_bar);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        btnLogin.setOnClickListener(v -> performEmailPasswordLogin());
 
         return view;
     }
+
+    private void performEmailPasswordLogin() {
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getContext(), "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getContext(), "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        setLoadingState(true);
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(requireActivity(), task -> {
+                    setLoadingState(false);
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Đăng nhập thất bại: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    // Nếu thành công, AuthStateListener ở LoginActivity sẽ tự động chuyển sang MainActivity
+                });
+    }
+
+    private void setLoadingState(boolean isLoading) {
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        btnLogin.setEnabled(!isLoading);
+    }
+
+
 
     private void initializeComponents(View view) {
         mAuth = FirebaseAuth.getInstance();
@@ -435,11 +484,11 @@ public class LoginFragment extends Fragment {
         return addressMap;
     }
 
-    private void setLoadingState(boolean isLoading) {
-        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        btnLogin.setEnabled(!isLoading);
-        btnGoogleSignIn.setEnabled(!isLoading);
-    }
+//    private void setLoadingState(boolean isLoading) {
+//        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+//        btnLogin.setEnabled(!isLoading);
+//        btnGoogleSignIn.setEnabled(!isLoading);
+//    }
 
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
