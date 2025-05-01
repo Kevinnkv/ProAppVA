@@ -1,6 +1,5 @@
 package com.vuongnk.appandroid.fragment;
 
-
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Intent;
@@ -23,8 +22,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.vuongnk.appandroid.R;
-import com.vuongnk.appandroid.dialog.CustomDialogFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,6 +34,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,6 +45,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.vuongnk.appandroid.R;
+import com.vuongnk.appandroid.activity.AdminMainActivity;
+import com.vuongnk.appandroid.activity.MainActivity;
+import com.vuongnk.appandroid.dialog.CustomDialogFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,65 +69,16 @@ public class LoginFragment extends Fragment {
     private TextView tvAdminEmail, tvHotline;
     private String token;
 
-    // Sử dụng google sign in đang bị lỗi -> cuc check
-    //   @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_login, container, false);
-//
-//        initializeComponents(view);
-//        setupGoogleSignIn();
-//        setupClickListeners();
-//
-//        return view;
-//    }
-
-  // cuc -> code 3 hàm đầu tiên ở đây
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        etEmail = view.findViewById(R.id.et_email);
-        etPassword = view.findViewById(R.id.et_password);
-        btnLogin = view.findViewById(R.id.btn_login);
-        progressBar = view.findViewById(R.id.progress_bar);
-
-        mAuth = FirebaseAuth.getInstance();
-
-        btnLogin.setOnClickListener(v -> performEmailPasswordLogin());
+        initializeComponents(view);
+        setupGoogleSignIn();
+        setupClickListeners();
 
         return view;
     }
-
-    private void performEmailPasswordLogin() {
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
-
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(getContext(), "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(getContext(), "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        setLoadingState(true);
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    setLoadingState(false);
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(getContext(), "Đăng nhập thất bại: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                    // Nếu thành công, AuthStateListener ở LoginActivity sẽ tự động chuyển sang MainActivity
-                });
-    }
-
-    private void setLoadingState(boolean isLoading) {
-        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        btnLogin.setEnabled(!isLoading);
-    }
-
-
 
     private void initializeComponents(View view) {
         mAuth = FirebaseAuth.getInstance();
@@ -271,7 +224,7 @@ public class LoginFragment extends Fragment {
 
         String role = dataSnapshot.child("role").getValue(String.class);
         saveUserRole(role);
-        //navigateToMainActivity(role);
+        navigateToMainActivity(role);
     }
 
     private void saveUserRole(String role) {
@@ -280,24 +233,24 @@ public class LoginFragment extends Fragment {
         sharedPreferences.edit().putString(ROLE_KEY, role).apply();
     }
 
-//    private void navigateToMainActivity(String role) {
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if (currentUser != null && token != null) {
-//            DatabaseReference userRef = FirebaseDatabase.getInstance()
-//                    .getReference("users")
-//                    .child(currentUser.getUid());
-//
-//            userRef.child("token").setValue(token);
-//        }
-//
-//        // Determine target activity based on role
-//        Class<?> targetActivity = "user".equals(role) ?
-//                MainActivity.class : AdminMainActivity.class;
-//
-//        Intent intent = new Intent(requireActivity(), targetActivity);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//    }
+    private void navigateToMainActivity(String role) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null && token != null) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance()
+                    .getReference("users")
+                    .child(currentUser.getUid());
+
+            userRef.child("token").setValue(token);
+        }
+
+        // Determine target activity based on role
+        Class<?> targetActivity = "user".equals(role) ?
+                MainActivity.class : AdminMainActivity.class;
+
+        Intent intent = new Intent(requireActivity(), targetActivity);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     private void signInWithGoogle() {
         if (checkGooglePlayServices()) {
@@ -427,7 +380,7 @@ public class LoginFragment extends Fragment {
         String role = dataSnapshot.child("role").getValue(String.class);
         updateUserToken(firebaseUser.getUid());
         saveUserRole(role);
-        //navigateToMainActivity(role);
+        navigateToMainActivity(role);
     }
 
     private void updateUserToken(String uid) {
@@ -446,7 +399,7 @@ public class LoginFragment extends Fragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         saveUserRole("user");
-                        //navigateToMainActivity("user");
+                        navigateToMainActivity("user");
                     } else {
                         showToast("Không thể tạo hồ sơ người dùng: " + task.getException().getMessage());
                     }
@@ -484,11 +437,11 @@ public class LoginFragment extends Fragment {
         return addressMap;
     }
 
-//    private void setLoadingState(boolean isLoading) {
-//        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-//        btnLogin.setEnabled(!isLoading);
-//        btnGoogleSignIn.setEnabled(!isLoading);
-//    }
+    private void setLoadingState(boolean isLoading) {
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        btnLogin.setEnabled(!isLoading);
+        btnGoogleSignIn.setEnabled(!isLoading);
+    }
 
     private void showToast(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();

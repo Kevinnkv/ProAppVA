@@ -1,6 +1,5 @@
 package com.vuongnk.appandroid.model;
 
-
 public class User {
     private String uid;
     private String displayName;

@@ -66,7 +66,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
-    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -79,9 +78,27 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.4.1")
     implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
 
+    //gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.work:work-runtime:2.9.0")
+
+    implementation("androidx.multidex:multidex:2.0.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     //bragde
     implementation("com.nex3z:notification-badge:1.0.4")
-    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    //glider
+    implementation("com.github.bumptech.glide:glide:4.15.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
 
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    //cloudinary
+    implementation ("com.cloudinary:cloudinary-android:2.1.0")
 
 }

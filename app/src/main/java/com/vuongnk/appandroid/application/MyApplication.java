@@ -1,25 +1,38 @@
 package com.vuongnk.appandroid.application;
 
-
 import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.vuongnk.appandroid.model.User;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.vuongnk.appandroid.R;
+import com.vuongnk.appandroid.helper.CloudinaryHelper;
+import com.vuongnk.appandroid.model.User;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class MyApplication extends Application {
     private static FirebaseAuth mAuth;
-   // private static GoogleSignInClient mGoogleSignInClient;
+    private static GoogleSignInClient mGoogleSignInClient;
     private static FirebaseUser currentUser;
     private static DatabaseReference usersRef;
     private static User currentUserInfo; // T
@@ -30,8 +43,19 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        application = this;
+        progressDialog = new ProgressDialog(this);
+        CloudinaryHelper.init(this);
         mAuth = FirebaseAuth.getInstance();
         usersRef = FirebaseDatabase.getInstance().getReference("users");
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), gso);
+
+        // Thêm listener để theo dõi thay đổi trạng thái đăng nhập
         mAuth.addAuthStateListener(firebaseAuth -> {
             currentUser = firebaseAuth.getCurrentUser();
             if (currentUser != null) {
@@ -47,36 +71,28 @@ public class MyApplication extends Application {
             currentUserInfo = null;
             return;
         }
+
         usersRef.child(currentUser.getUid())
                 .get()
-                .addOnSuccessListener(snapshot -> currentUserInfo = snapshot.getValue(User.class));
+                .addOnSuccessListener(dataSnapshot -> {
+                    currentUserInfo = dataSnapshot.getValue(User.class);
+                });
     }
 
     public static void clearUserInfo() {
-        currentUser = null;
         currentUserInfo = null;
+        currentUser = null;
     }
 
-    public static void handleLogout() {
-        if (currentUser != null) {
-            usersRef.child(currentUser.getUid())
-                    .child("token")
-                    .setValue("");
-        }
-        clearUserInfo();
-        FirebaseAuth.getInstance().signOut();
-    }
-
-    // lấy thông tin người dùng
     public static User getCurrentUserInfo() {
         if (currentUser == null) {
             currentUser = mAuth.getCurrentUser();
         }
-
+        
         if (currentUser != null && currentUserInfo == null) {
             loadUserInfo();
         }
-
+        
         return currentUserInfo;
     }
 
@@ -135,7 +151,56 @@ public class MyApplication extends Application {
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
     }
-    // thông báo khi vào đăng nhập -> Ánh làm
+
+    public static void handleLogout() {
+        // Clear user info before signing out
+        usersRef.child(currentUser.getUid()).child("token").setValue("");
+        clearUserInfo();
+        mAuth.signOut();
+        mGoogleSignInClient.signOut();
+
+        // Clear login state and user data
+        SharedPreferences userPrefs = application.getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        userPrefs.edit().clear().apply();
+    }
+
+    private static void sendFCMNotification(String fcmToken, String title, String message) {
+        String serverKey = "key=YOUR_SERVER_KEY"; // 🔹 Thay YOUR_SERVER_KEY bằng server key Firebase
+
+        try {
+            JSONObject json = new JSONObject();
+            JSONObject notification = new JSONObject();
+            notification.put("title", title);
+            notification.put("body", message);
+
+            json.put("to", fcmToken);
+            json.put("notification", notification);
+
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = RequestBody.create(json.toString(), MediaType.get("application/json; charset=utf-8"));
+            Request request = new Request.Builder()
+                    .url("https://fcm.googleapis.com/fcm/send")
+                    .post(body)
+                    .addHeader("Authorization", serverKey)
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("FCM", "Gửi thông báo thất bại: " + e.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.d("FCM", "Thông báo gửi thành công: " + response.body().string());
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
@@ -166,5 +231,4 @@ public class MyApplication extends Application {
 //                Toast.LENGTH_SHORT).show();
 //    }
 //});
-
 
