@@ -1,4 +1,5 @@
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,102 +8,126 @@
     tools:context=".activity.MainActivity"
     tools:openDrawer="start">
 
+    <!-- layer để chặn touch khi cần -->
     <FrameLayout
         android:id="@+id/block_touch_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/hihi"
+    <!-- Nội dung chính có thể cuộn -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <LinearLayout
+            android:id="@+id/hihi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <!-- AppBar + Toolbar -->
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/pink"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="Trang chính">
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:layout_gravity="right"
-                    android:orientation="horizontal">
+                    android:background="@color/pink"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="Trang chính">
 
-                    <ImageView
-                        android:id="@+id/imgsearch"
-                        android:layout_width="wrap_content"
+                    <!-- Các icon ở bên phải Toolbar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        android:layout_marginRight="15dp"
-                        android:src="@drawable/ic_search_24" />
+                        android:orientation="horizontal"
+                        android:gravity="right|center_vertical">
 
-                    <FrameLayout
-                        android:id="@+id/framegiohang"
-                        android:layout_width="55dp"
-                        android:layout_height="?attr/actionBarSize"
-                        android:layout_gravity="right"
-                        android:layout_marginRight="10dp">
-
-                        <com.nex3z.notificationbadge.NotificationBadge
-                            android:id="@+id/menu_sl"
-                            android:layout_width="28dp"
-                            android:layout_height="28dp"
-                            android:layout_gravity="top|right" />
-
+                        <!-- ICON TÌM KIẾM -->
                         <ImageView
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_marginTop="15dp"
-                            android:src="@drawable/ic_cart_24" />
-                    </FrameLayout>
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+                            android:id="@+id/imgsearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_marginEnd="15dp"
+                            android:src="@drawable/ic_search_24" />
 
-        <ViewFlipper
-            android:id="@+id/viewlipper"
-            android:layout_width="match_parent"
-            android:layout_height="190dp">
-        </ViewFlipper>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:text="Danh mục sản phẩm:"
-            android:paddingStart="5dp"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:layout_gravity="center" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_categories"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:clipToPadding="false" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:text="Sản phẩm:"
-            android:paddingStart="5dp"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:layout_gravity="center" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_list_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:layout_gravity="center"/>
-    </LinearLayout>
+                        <!-- FRAME GIỎ HÀNG + THẺ SỐ LƯỢNG -->
+                        <FrameLayout
+                            android:id="@+id/framegiohang"
+                            android:layout_width="55dp"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_marginEnd="10dp"
+                            android:layout_gravity="center_vertical">
+
+                            <com.nex3z.notificationbadge.NotificationBadge
+                                android:id="@+id/menu_sl"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="top|end" />
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_cart_24" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <!-- Banner -->
+            <ViewFlipper
+                android:id="@+id/viewlipper"
+                android:layout_width="match_parent"
+                android:layout_height="190dp" />
+
+            <!-- Danh mục sản phẩm -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="Danh mục sản phẩm:"
+                android:paddingStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_category" />
+
+            <!-- Sản phẩm -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="Sản phẩm:"
+                android:paddingStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_book" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="200dp"
