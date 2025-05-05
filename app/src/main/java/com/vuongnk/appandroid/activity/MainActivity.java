@@ -40,7 +40,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.nex3z.notificationbadge.NotificationBadge;
+
 
 import com.vuongnk.appandroid.R;
 import com.vuongnk.appandroid.application.MyApplication;
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // Xử lý giao diện trang chủ
     private static final String TAG = "MainActivity";
-    private static final int REQUEST_NOTIFICATION_PERMISSION = 1;
     private ViewFlipper viewFlipper;
     private NavigationView navigationView;
     private DrawerLayout mDrawerLayout;
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Book> bookList;
     private List<Category> categoryList;
     private DatabaseReference databaseReference, categoryRef;
-    private ValueEventListener booksListener, categoriesListener, cartListener;
+    private ValueEventListener booksListener, categoriesListener;
 
     private BookAdapter bookAdapter;
     private CategoryAdapter categoryAdapter;
@@ -113,26 +112,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initFirebase();
         loadData();
 
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                        REQUEST_NOTIFICATION_PERMISSION);
-            }
-        }
-    }
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_NOTIFICATION_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Quyền nhận thông báo đã được cấp!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Quyền nhận thông báo bị từ chối!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     private void initUI() {
         toolbar = findViewById(R.id.toolbar);

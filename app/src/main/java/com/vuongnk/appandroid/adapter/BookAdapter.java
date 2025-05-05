@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vuongnk.appandroid.R;
 
+import com.vuongnk.appandroid.activity.BookDetailActivity;
 import com.vuongnk.appandroid.model.Book;
 import com.bumptech.glide.Glide;
 
@@ -79,6 +80,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
 
         // Xử lý sự kiện khi nhấn vào item -> Về sau add Giao diện thông tin sản phẩm
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, BookDetailActivity.class);
+            intent.putExtra("book", book);
+            context.startActivity(intent);
+        });
     }
 
     @Override

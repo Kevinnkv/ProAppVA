@@ -44,10 +44,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categories.get(position);
         holder.tvName.setText(category.getName());
 
-//    Xử lý việc chọn danh mục
-//        holder.itemView.setBackgroundResource(
-//                position == selectedCategoryPosition ? R.color.selected_category : R.color.unselected_category
-//        );
+
+        // Xử lý việc chọn danh mục
+        holder.itemView.setBackgroundResource(
+                position == selectedCategoryPosition ? R.color.selected_category : R.color.unselected_category
+        );
 
         if (category.getImageUrl() != null && !category.getImageUrl().isEmpty()) {
             Glide.with(context)

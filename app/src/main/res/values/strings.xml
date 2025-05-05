@@ -11,4 +11,8 @@
     <string name="navigation_drawer_open">Open navigation</string>
     <string name="navigation_drawer_close">Close navigation</string>
 
+    <!--xử lý danh mục khi chọn -->
+    <color name="selected_category">#E0E0E0</color>
+    <color name="unselected_category">#FFFFFF</color>
+
 </resources>

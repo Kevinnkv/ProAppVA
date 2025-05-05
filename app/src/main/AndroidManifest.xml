@@ -48,6 +48,9 @@
         <activity
             android:name=".activity.ContactActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.BookDetailActivity"
+            android:exported="false" />
 
         <service
             android:name=".service.MyFireBaseMessagingService"
