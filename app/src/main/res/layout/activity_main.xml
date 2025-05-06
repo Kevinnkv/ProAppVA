@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+=======
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> fdfcc2b (Initial commit)
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,12 +12,17 @@
     tools:context=".activity.MainActivity"
     tools:openDrawer="start">
 
+<<<<<<< HEAD
+=======
+    <!-- layer để chặn touch khi cần -->
+>>>>>>> fdfcc2b (Initial commit)
     <FrameLayout
         android:id="@+id/block_touch_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+<<<<<<< HEAD
     <LinearLayout
         android:id="@+id/hihi"
         android:layout_width="match_parent"
@@ -103,6 +113,121 @@
             android:background="@color/white"
             android:layout_gravity="center"/>
     </LinearLayout>
+=======
+    <!-- Nội dung chính có thể cuộn -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/hihi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- AppBar + Toolbar -->
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/pink"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:title="Trang chính">
+
+                    <!-- Các icon ở bên phải Toolbar -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:orientation="horizontal"
+                        android:gravity="right|center_vertical">
+
+                        <!-- ICON TÌM KIẾM -->
+                        <ImageView
+                            android:id="@+id/imgsearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_marginEnd="15dp"
+                            android:src="@drawable/ic_search_24" />
+
+                        <!-- FRAME GIỎ HÀNG + THẺ SỐ LƯỢNG -->
+                        <FrameLayout
+                            android:id="@+id/framegiohang"
+                            android:layout_width="55dp"
+                            android:layout_height="?attr/actionBarSize"
+                            android:layout_marginEnd="10dp"
+                            android:layout_gravity="center_vertical">
+
+                            <com.nex3z.notificationbadge.NotificationBadge
+                                android:id="@+id/menu_sl"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="top|end" />
+
+                            <ImageView
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_cart_24" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <!-- Banner -->
+            <ViewFlipper
+                android:id="@+id/viewlipper"
+                android:layout_width="match_parent"
+                android:layout_height="190dp" />
+
+            <!-- Danh mục sản phẩm -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="Danh mục sản phẩm:"
+                android:paddingStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_category" />
+
+            <!-- Sản phẩm -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="Sản phẩm:"
+                android:paddingStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_book" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Navigation Drawer -->
+>>>>>>> fdfcc2b (Initial commit)
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="200dp"

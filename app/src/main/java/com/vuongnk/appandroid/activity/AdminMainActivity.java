@@ -134,10 +134,17 @@ public class AdminMainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        });
 //
+<<<<<<< HEAD
 //        btnManageOrders.setOnClickListener(v -> {
 //            Intent intent = new Intent(AdminMainActivity.this, ListOrderActivity.class);
 //            startActivity(intent);
 //        });
+=======
+        btnManageOrders.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminMainActivity.this, ListOrderActivity.class);
+            startActivity(intent);
+        });
+>>>>>>> fdfcc2b (Initial commit)
 
         btnManageUsers.setOnClickListener(v -> {
             Intent intent = new Intent(AdminMainActivity.this, UserManagementActivity.class);

@@ -48,7 +48,28 @@
         <activity
             android:name=".activity.ContactActivity"
             android:exported="false" />
+<<<<<<< HEAD
 
+=======
+        <activity
+            android:name=".activity.BookDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ListOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:exported="false"/>
+>>>>>>> fdfcc2b (Initial commit)
         <service
             android:name=".service.MyFireBaseMessagingService"
             android:exported="false">

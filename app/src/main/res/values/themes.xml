@@ -6,4 +6,15 @@
     </style>
 
     <style name="Theme.AppAndroid" parent="Base.Theme.AppAndroid" />
+<<<<<<< HEAD
+=======
+    <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Tắt action bar và status bar -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+
+
+    </style>
+>>>>>>> fdfcc2b (Initial commit)
 </resources>
