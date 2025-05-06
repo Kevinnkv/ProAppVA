@@ -1,13 +1,14 @@
 package com.vuongnk.appandroid.activity;
 
+
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -16,15 +17,22 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
+import com.vuongnk.appandroid.R;
+import com.vuongnk.appandroid.application.MyApplication;
+import com.vuongnk.appandroid.helper.FirebaseAuthHelper;
 import com.google.android.material.button.MaterialButton;
+
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.vuongnk.appandroid.R;
-import com.vuongnk.appandroid.application.MyApplication;
+import com.vuongnk.appandroid.model.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +45,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private TextView tvTotalOrders, tvTotalRevenue;
     private MaterialButton btnManageBooks, btnManageCategorys, btnManageOrders, btnManageUsers,
-                          btnManageFeedback, btnLogout;
+            btnManageFeedback, btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +61,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
         initUI();
         setupToolbar();
-//        loadStatistics();
+        loadStatistics();
         setupListeners();
     }
 
@@ -91,37 +99,37 @@ public class AdminMainActivity extends AppCompatActivity {
         }
     }
 
-//    private void loadStatistics() {
-//        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
-//        ordersRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                List<Order> orders = new ArrayList<>();
-//                double totalRevenue = 0;
-//
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    Order order = snapshot.getValue(Order.class);
-//                    if (order != null) {
-//                        orders.add(order);
-//                        if ("COMPLETED".equals(order.getStatus())) {
-//                            totalRevenue += order.getTotalAmount();
-//                        }
-//                    }
-//                }
-//
-//                // Cập nhật tổng số đơn hàng
-//                tvTotalOrders.setText(String.valueOf(orders.size()));
-//
-//                // Cập nhật tổng doanh thu từ đơn hàng hoàn thành
-//                tvTotalRevenue.setText(String.format("%,.0fđ", totalRevenue));
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                // Xử lý lỗi nếu cần
-//            }
-//        });
-//    }
+    private void loadStatistics() {
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("orders");
+        ordersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Order> orders = new ArrayList<>();
+                double totalRevenue = 0;
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Order order = snapshot.getValue(Order.class);
+                    if (order != null) {
+                        orders.add(order);
+                        if ("COMPLETED".equals(order.getStatus())) {
+                            totalRevenue += order.getTotalAmount();
+                        }
+                    }
+                }
+
+                // Cập nhật tổng số đơn hàng
+                tvTotalOrders.setText(String.valueOf(orders.size()));
+
+                // Cập nhật tổng doanh thu từ đơn hàng hoàn thành
+                tvTotalRevenue.setText(String.format("%,.0fđ", totalRevenue));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý lỗi nếu cần
+            }
+        });
+    }
 
     private void setupListeners() {
 //        btnManageBooks.setOnClickListener(v -> {
@@ -133,11 +141,11 @@ public class AdminMainActivity extends AppCompatActivity {
 //            Intent intent = new Intent(AdminMainActivity.this, CategoryManagementActivity.class);
 //            startActivity(intent);
 //        });
-//
-//        btnManageOrders.setOnClickListener(v -> {
-//            Intent intent = new Intent(AdminMainActivity.this, ListOrderActivity.class);
-//            startActivity(intent);
-//        });
+
+        btnManageOrders.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminMainActivity.this, ListOrderActivity.class);
+            startActivity(intent);
+        });
 
         btnManageUsers.setOnClickListener(v -> {
             Intent intent = new Intent(AdminMainActivity.this, UserManagementActivity.class);

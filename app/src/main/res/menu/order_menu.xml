@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_pending" android:title="Chờ xử lý"/>
+    <item android:id="@+id/menu_shipping" android:title="Đang giao"/>
+    <item android:id="@+id/menu_completed" android:title="Hoàn thành"/>
+    <item android:id="@+id/menu_canceled" android:title="Hủy"/>
+</menu>
