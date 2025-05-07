@@ -410,6 +410,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(getApplicationContext(), ContactActivity.class));
         } else if (id == R.id.nav_noti) {
             startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+        } else if (id == R.id.nav_setting) {
+            startActivity(new Intent(getApplicationContext(), SettingActivity.class));
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
