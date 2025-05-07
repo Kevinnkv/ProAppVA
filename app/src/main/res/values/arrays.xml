@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_options">
+        <item>Mặc định</item>
+        <item>Điểm đánh giá cao nhất</item>
+        <item>Giá tăng dần</item>
+        <item>Giá giảm dần</item>
+    </string-array>
+
+    <string-array name="category_options">
+        <item>Tất cả</item>
+        <item>Manga</item>
+        <item>Hành động</item>
+        <item>Phiêu lưu</item>
+    </string-array>
+</resources>

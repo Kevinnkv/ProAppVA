@@ -201,6 +201,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initListeners() {
+        imgsearch.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        });
 
         framegiohang.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, CartActivity.class));
