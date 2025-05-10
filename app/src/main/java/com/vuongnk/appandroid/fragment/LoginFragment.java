@@ -61,7 +61,9 @@ public class LoginFragment extends Fragment {
 
     private EditText etEmail, etPassword;
     private Button btnLogin;
-    private SignInButton btnGoogleSignIn;
+
+    //Lỗi không đăng nhập vào được
+    //private SignInButton btnGoogleSignIn;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -74,7 +76,7 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         initializeComponents(view);
-        setupGoogleSignIn();
+        //setupGoogleSignIn();
         setupClickListeners();
 
         return view;
@@ -87,39 +89,39 @@ public class LoginFragment extends Fragment {
         etEmail = view.findViewById(R.id.et_email);
         etPassword = view.findViewById(R.id.et_password);
         btnLogin = view.findViewById(R.id.btn_login);
-        btnGoogleSignIn = view.findViewById(R.id.btn_google_sign_in);
+        //btnGoogleSignIn = view.findViewById(R.id.btn_google_sign_in);
         progressBar = view.findViewById(R.id.progress_bar);
         tvAdminEmail = view.findViewById(R.id.tv_admin_email);
         tvHotline = view.findViewById(R.id.tv_hotline);
 
-        for (int i = 0; i < btnGoogleSignIn.getChildCount(); i++) {
-            View v = btnGoogleSignIn.getChildAt(i);
-            if (v instanceof TextView) {
-                ((TextView) v).setText("Đăng nhập bằng tài khoản Google");
-                break;
-            }
-        }
+//        for (int i = 0; i < btnGoogleSignIn.getChildCount(); i++) {
+//            View v = btnGoogleSignIn.getChildAt(i);
+//            if (v instanceof TextView) {
+//                ((TextView) v).setText("Đăng nhập bằng tài khoản Google");
+//                break;
+//            }
+//        }
     }
 
-    private void setupGoogleSignIn() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-
-        signInLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                    handleGoogleSignInResult(task);
-                });
-    }
+//    private void setupGoogleSignIn() {
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(getString(R.string.default_web_client_id))
+//                .requestEmail()
+//                .build();
+//
+//        mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+//
+//        signInLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                result -> {
+//                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+//                    //handleGoogleSignInResult(task);
+//                });
+//    }
 
     private void setupClickListeners() {
         btnLogin.setOnClickListener(v -> loginWithEmailPassword());
-        btnGoogleSignIn.setOnClickListener(v -> signInWithGoogle());
+        //btnGoogleSignIn.setOnClickListener(v -> signInWithGoogle());
 
         setupContactListeners();
     }
@@ -252,93 +254,93 @@ public class LoginFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void signInWithGoogle() {
-        if (checkGooglePlayServices()) {
-            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-            signInLauncher.launch(signInIntent);
-        }
-    }
+//    private void signInWithGoogle() {
+//        if (checkGooglePlayServices()) {
+//            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+//            signInLauncher.launch(signInIntent);
+//        }
+//    }
 
-    private boolean checkGooglePlayServices() {
-        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext());
-        if (status != ConnectionResult.SUCCESS) {
-            if (GoogleApiAvailability.getInstance().isUserResolvableError(status)) {
-                GoogleApiAvailability.getInstance().getErrorDialog(
-                        requireActivity(),
-                        status,
-                        2404
-                ).show();
-            } else {
-                showErrorDialog("Lỗi", "Thiết bị không hỗ trợ Google Play Services");
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            if (account != null && account.getIdToken() != null) {
-                firebaseAuthWithGoogle(account.getIdToken());
-            } else {
-                showErrorDialog("Đăng nhập thất bại", "Không thể lấy thông tin tài khoản Google");
-            }
-        } catch (ApiException e) {
-            // Log chi tiết lỗi
-            Log.e(TAG, "Google sign in failed", e);
-
-            // Hiển thị thông báo lỗi chi tiết hơn
-            String errorMessage = "Lỗi đăng nhập: ";
-            switch (e.getStatusCode()) {
-                case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
-                    errorMessage += "Đăng nhập bị hủy";
-                    break;
-                case GoogleSignInStatusCodes.SIGN_IN_FAILED:
-                    errorMessage += "Đăng nhập không thành công";
-                    break;
-                case GoogleSignInStatusCodes.NETWORK_ERROR:
-                    errorMessage += "Lỗi mạng";
-                    break;
-                default:
-                    errorMessage += e.getMessage();
-            }
-
-            showErrorDialog("Đăng nhập thất bại", errorMessage);
-        }
-    }
-
-
-    private void firebaseAuthWithGoogle(String idToken) {
-        setLoadingState(true);
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity(), task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            checkAndCreateUserProfile(firebaseUser);
-                        } else {
-                            setLoadingState(false);
-                            showErrorDialog("Lỗi", "Không thể lấy thông tin người dùng");
-                        }
-                    } else {
-                        setLoadingState(false);
-                        // Xử lý chi tiết các loại lỗi xác thực
-                        Exception exception = task.getException();
-                        String errorMessage = "Xác thực thất bại: ";
-
-                        if (exception instanceof FirebaseAuthInvalidCredentialsException) {
-                            errorMessage += "Thông tin đăng nhập không hợp lệ";
-                        } else {
-                            errorMessage += exception.getMessage();
-                        }
-
-                        showErrorDialog("Lỗi Xác Thực", errorMessage);
-                    }
-                });
-    }
+//    private boolean checkGooglePlayServices() {
+//        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext());
+//        if (status != ConnectionResult.SUCCESS) {
+//            if (GoogleApiAvailability.getInstance().isUserResolvableError(status)) {
+//                GoogleApiAvailability.getInstance().getErrorDialog(
+//                        requireActivity(),
+//                        status,
+//                        2404
+//                ).show();
+//            } else {
+//                showErrorDialog("Lỗi", "Thiết bị không hỗ trợ Google Play Services");
+//            }
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
+//        try {
+//            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+//            if (account != null && account.getIdToken() != null) {
+//                firebaseAuthWithGoogle(account.getIdToken());
+//            } else {
+//                showErrorDialog("Đăng nhập thất bại", "Không thể lấy thông tin tài khoản Google");
+//            }
+//        } catch (ApiException e) {
+//            // Log chi tiết lỗi
+//            Log.e(TAG, "Google sign in failed", e);
+//
+//            // Hiển thị thông báo lỗi chi tiết hơn
+//            String errorMessage = "Lỗi đăng nhập: ";
+//            switch (e.getStatusCode()) {
+//                case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+//                    errorMessage += "Đăng nhập bị hủy";
+//                    break;
+//                case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+//                    errorMessage += "Đăng nhập không thành công";
+//                    break;
+//                case GoogleSignInStatusCodes.NETWORK_ERROR:
+//                    errorMessage += "Lỗi mạng";
+//                    break;
+//                default:
+//                    errorMessage += e.getMessage();
+//            }
+//
+//            showErrorDialog("Đăng nhập thất bại", errorMessage);
+//        }
+//    }
+//
+//
+//    private void firebaseAuthWithGoogle(String idToken) {
+//        setLoadingState(true);
+//
+//        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(requireActivity(), task -> {
+//                    if (task.isSuccessful()) {
+//                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+//                        if (firebaseUser != null) {
+//                            checkAndCreateUserProfile(firebaseUser);
+//                        } else {
+//                            setLoadingState(false);
+//                            showErrorDialog("Lỗi", "Không thể lấy thông tin người dùng");
+//                        }
+//                    } else {
+//                        setLoadingState(false);
+//                        // Xử lý chi tiết các loại lỗi xác thực
+//                        Exception exception = task.getException();
+//                        String errorMessage = "Xác thực thất bại: ";
+//
+//                        if (exception instanceof FirebaseAuthInvalidCredentialsException) {
+//                            errorMessage += "Thông tin đăng nhập không hợp lệ";
+//                        } else {
+//                            errorMessage += exception.getMessage();
+//                        }
+//
+//                        showErrorDialog("Lỗi Xác Thực", errorMessage);
+//                    }
+//                });
+//    }
 
     private void checkAndCreateUserProfile(FirebaseUser firebaseUser) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users");
@@ -440,7 +442,7 @@ public class LoginFragment extends Fragment {
     private void setLoadingState(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         btnLogin.setEnabled(!isLoading);
-        btnGoogleSignIn.setEnabled(!isLoading);
+        //btnGoogleSignIn.setEnabled(!isLoading);
     }
 
     private void showToast(String message) {
