@@ -161,14 +161,14 @@
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
                         <!-- Quản lý danh mục -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_manage_category"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Quản lý danh mục"
-                            app:icon="@drawable/baseline_category_24"
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+<!--                        <com.google.android.material.button.MaterialButton-->
+<!--                            android:id="@+id/btn_manage_category"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="8dp"-->
+<!--                            android:text="Quản lý danh mục"-->
+<!--                            app:icon="@drawable/baseline_category_24"-->
+<!--                            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />-->
 
                         <!-- Quản lý đơn hàng -->
                         <com.google.android.material.button.MaterialButton
