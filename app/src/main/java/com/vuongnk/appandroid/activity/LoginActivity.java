@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.widget.Toast;
 
+import android.content.SharedPreferences;
+import android.content.Context;
 public class LoginActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -65,7 +67,14 @@ public class LoginActivity extends AppCompatActivity {
         authListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                String role = sp.getString("role", "user");
+                Class<?> target = "admin".equals(role)
+                        ? AdminMainActivity.class
+                        : MainActivity.class;
+                Intent it = new Intent(LoginActivity.this, target);
+                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(it);
                 finish();
             }
         };
@@ -93,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 //    }
 
-    // cuc code thêm 2 hàm dưới này, nếu Thương làm thêm SharePreference thì có thể bỏ 2 hàm dưới và phần c@Override
+
     @Override
     protected void onStart() {
         super.onStart();
