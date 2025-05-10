@@ -18,14 +18,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/btn_add_book"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thêm sách mới"
-            android:textAllCaps="false"
-            android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.Button" />
 
         <ScrollView
             android:layout_width="match_parent"
