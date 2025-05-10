@@ -34,11 +34,11 @@
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true"  >
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -48,18 +48,10 @@
         <activity
             android:name=".activity.ContactActivity"
             android:exported="false" />
-
-        <service
-            android:name=".service.MyFireBaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-
         <activity
             android:name=".activity.UserManagementActivity"
             android:exported="false" />
+
         <activity
             android:name=".activity.AdminMainActivity"
             android:exported="false" />
@@ -79,7 +71,22 @@
             android:exported="false" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.EditProfileActivity" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:exported="false" />
 
+        <!-- Khai báo màn hình Chi tiết sách -->
+        <activity
+            android:name=".activity.BookDetailActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".service.MyFireBaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
     </application>
 

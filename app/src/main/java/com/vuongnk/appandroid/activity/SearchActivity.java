@@ -192,6 +192,15 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setupSearchSuggestions() {
         List<String> suggestions = generateSearchSuggestions();
+//        ArrayAdapter<String> suggestionsAdapter = new ArrayAdapter<>(
+//                this,
+//                android.R.layout.simple_dropdown_item_1line,
+//                suggestions
+//        );
+        // Nếu generateSearchSuggestions() trả về null, khởi tạo một list rỗng
+        if (suggestions == null) {
+            suggestions = new ArrayList<>();
+        }
         ArrayAdapter<String> suggestionsAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
@@ -201,20 +210,26 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private List<String> generateSearchSuggestions() {
+        // Nếu allBooks chưa được load hoặc null → trả list rỗng
+        if (allBooks == null) {
+            return new ArrayList<>();
+        }
         Set<String> suggestionSet = new HashSet<>();
         for (Book book : allBooks) {
-            suggestionSet.add(book.getTitle());
-            suggestionSet.add(book.getAuthor());
+            // Lấy an toàn từng trường, tránh null
+            String title = book.getTitle()       != null ? book.getTitle()       : "";
+            String author= book.getAuthor()      != null ? book.getAuthor()      : "";
+            String desc  = book.getDescription() != null ? book.getDescription() : "";
 
-            // Tách từ từ tiêu đề và mô tả để tạo gợi ý
-            String[] titleWords = book.getTitle().split("\\s+");
-            String[] descWords = book.getDescription().split("\\s+");
+            suggestionSet.add(title);
+            suggestionSet.add(author);
 
-            for (String word : titleWords) {
-                if (word.length() > 2) suggestionSet.add(word);
+            // Tách từ để thêm gợi ý
+            for (String w : title.split("\\s+")) {
+                if (w.length() > 2) suggestionSet.add(w);
             }
-            for (String word : descWords) {
-                if (word.length() > 2) suggestionSet.add(word);
+            for (String w : desc.split("\\s+")) {
+                if (w.length() > 2) suggestionSet.add(w);
             }
         }
         return new ArrayList<>(suggestionSet);
@@ -328,10 +343,16 @@ public class SearchActivity extends AppCompatActivity {
             String[] queryWords = normalizedQuery.split("\\s+");
 
             for (Book book : allBooks) {
-                String normalizedTitle = removeAccent(book.getTitle().toLowerCase());
-                String normalizedAuthor = removeAccent(book.getAuthor().toLowerCase());
-                String normalizedDescription = removeAccent(book.getDescription().toLowerCase());
-
+//                String normalizedTitle = removeAccent(book.getTitle().toLowerCase());
+//                String normalizedAuthor = removeAccent(book.getAuthor().toLowerCase());
+//                String normalizedDescription = removeAccent(book.getDescription().toLowerCase());
+//Thay 3 dòng trên bằng cách “bọc” chúng vào một đoạn null-safe
+                String title       = book.getTitle()       != null ? book.getTitle()       : "";
+                String author      = book.getAuthor()      != null ? book.getAuthor()      : "";
+                String description = book.getDescription() != null ? book.getDescription() : "";
+                String normalizedTitle       = removeAccent(title.toLowerCase());
+                String normalizedAuthor      = removeAccent(author.toLowerCase());
+                String normalizedDescription = removeAccent(description.toLowerCase());
                 boolean matchAllWords = true;
                 for (String word : queryWords) {
                     if (!(normalizedTitle.contains(word) ||
