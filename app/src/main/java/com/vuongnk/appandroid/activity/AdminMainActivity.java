@@ -44,7 +44,7 @@ public class AdminMainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ProgressDialog progressDialog;
     private TextView tvTotalOrders, tvTotalRevenue;
-    private MaterialButton btnManageBooks, btnManageCategorys, btnManageOrders, btnManageUsers,
+    private MaterialButton btnManageBooks, btnManageOrders, btnManageUsers,
             btnManageFeedback, btnLogout;
 
     @Override
@@ -82,7 +82,7 @@ public class AdminMainActivity extends AppCompatActivity {
         tvTotalOrders = findViewById(R.id.tv_total_orders);
         tvTotalRevenue = findViewById(R.id.tv_total_revenue);
         btnManageBooks = findViewById(R.id.btn_manage_books);
-        btnManageCategorys = findViewById(R.id.btn_manage_category);
+
         btnManageOrders = findViewById(R.id.btn_manage_orders);
         btnManageUsers = findViewById(R.id.btn_manage_users);
         btnManageFeedback = findViewById(R.id.btn_manage_feedback);
@@ -132,15 +132,6 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-//        btnManageBooks.setOnClickListener(v -> {
-//            Intent intent = new Intent(AdminMainActivity.this, BookManagementActivity.class);
-//            startActivity(intent);
-//        });
-//
-//        btnManageCategorys.setOnClickListener(v -> {
-//            Intent intent = new Intent(AdminMainActivity.this, CategoryManagementActivity.class);
-//            startActivity(intent);
-//        });
 
         btnManageOrders.setOnClickListener(v -> {
             Intent intent = new Intent(AdminMainActivity.this, ListOrderActivity.class);
@@ -154,6 +145,11 @@ public class AdminMainActivity extends AppCompatActivity {
 
         btnManageFeedback.setOnClickListener(v -> {
             // TODO: Chuyển đến màn hình quản lý phản hồi
+        });
+
+        btnManageBooks.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminMainActivity.this, BookManagementActivity.class);
+            startActivity(intent);
         });
 
         btnLogout.setOnClickListener(v -> handleLogout());
