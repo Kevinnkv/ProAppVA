@@ -61,13 +61,25 @@
             android:name=".activity.UserManagementActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SearchActivity"
+            android:name=".activity.AdminMainActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AdminMainActivity"
+            android:name=".activity.BookManagementActivity"
+            android:exported="false" />
+
+        <!-- Hiển thị màn hình giỏ hàng -->
+        <activity
+            android:name=".activity.CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ListOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SearchActivity"
             android:exported="false" />
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.EditProfileActivity" />
+
 
     </application>
 
