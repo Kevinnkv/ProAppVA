@@ -73,7 +73,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             tvName.setText(user.getDisplayName());
             tvEmail.setText(user.getEmail());
             tvRole.setText(user.getRole());
-            tv_accountBalance.setText("Số dư: " + user.getAccountBalance());
+            tv_accountBalance.setText(String.valueOf(user.getAccountBalance()));
 
             tvStatus.setText(user.isAccountActive() ? "Đang hoạt động" : "Đã khóa");
             tvStatus.setTextColor(user.isAccountActive() ? Color.GREEN : Color.RED);

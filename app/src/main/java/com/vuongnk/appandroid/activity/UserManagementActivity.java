@@ -2,6 +2,7 @@ package com.vuongnk.appandroid.activity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,6 +82,7 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userList.clear();
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    Log.d("userSnapshot", userSnapshot.toString());
                     User user = userSnapshot.getValue(User.class);
                     if (user != null) {
                         userList.add(user);
@@ -91,8 +93,8 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserManagementActivity.this, 
-                    "Lỗi: " + error.getMessage(), 
+                Toast.makeText(UserManagementActivity.this,
+                    "Lỗi: " + error.getMessage(),
                     Toast.LENGTH_SHORT).show();
             }
         });
@@ -110,11 +112,11 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
             .setMessage("Bạn có chắc muốn xóa người dùng này?")
             .setPositiveButton("Xóa", (dialog, which) -> {
                 usersRef.child(user.getUid()).removeValue()
-                    .addOnSuccessListener(aVoid -> Toast.makeText(this, 
-                        "Đã xóa người dùng", 
+                    .addOnSuccessListener(aVoid -> Toast.makeText(this,
+                        "Đã xóa người dùng",
                         Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(this, 
-                        "Lỗi: " + e.getMessage(), 
+                    .addOnFailureListener(e -> Toast.makeText(this,
+                        "Lỗi: " + e.getMessage(),
                         Toast.LENGTH_SHORT).show());
             })
             .setNegativeButton("Hủy", null)
@@ -123,8 +125,8 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
 
     @Override
     public void onToggleUserStatus(User user) {
-        String message = user.isAccountActive() ? 
-            "Bạn có chắc muốn khóa tài khoản này?" : 
+        String message = user.isAccountActive() ?
+            "Bạn có chắc muốn khóa tài khoản này?" :
             "Bạn có chắc muốn mở khóa tài khoản này?";
 
         new AlertDialog.Builder(this)
@@ -133,16 +135,16 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
             .setPositiveButton("Đồng ý", (dialog, which) -> {
                 // Đảo ngược trạng thái active
                 int newStatus = user.isAccountActive() ? 0 : 1;
-                
+
                 usersRef.child(user.getUid()).child("isActive").setValue(newStatus)
                     .addOnSuccessListener(aVoid -> {
-                        String successMessage = newStatus == 1 ? 
-                            "Đã mở khóa tài khoản" : 
+                        String successMessage = newStatus == 1 ?
+                            "Đã mở khóa tài khoản" :
                             "Đã khóa tài khoản";
                         Toast.makeText(this, successMessage, Toast.LENGTH_SHORT).show();
                     })
-                    .addOnFailureListener(e -> Toast.makeText(this, 
-                        "Lỗi: " + e.getMessage(), 
+                    .addOnFailureListener(e -> Toast.makeText(this,
+                        "Lỗi: " + e.getMessage(),
                         Toast.LENGTH_SHORT).show());
             })
             .setNegativeButton("Hủy", null)
@@ -159,7 +161,7 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
         etName.setText(user.getDisplayName());
         etEmail.setText(user.getEmail());
         etPhone.setText(user.getPhoneNumber());
-        etAccountBalance.setText("Số dư: "+ user.getAccountBalance());
+        etAccountBalance.setText(String.valueOf(user.getAccountBalance()));
 
         new AlertDialog.Builder(this)
             .setTitle("Chỉnh sửa người dùng")
@@ -168,14 +170,14 @@ public class UserManagementActivity extends AppCompatActivity implements UserAda
                 Map<String, Object> updates = new HashMap<>();
                 updates.put("displayName", etName.getText().toString());
                 updates.put("phoneNumber", etPhone.getText().toString());
-                updates.put("accountBalance", etAccountBalance.getText().toString());
+                updates.put("accountBalance", Long.valueOf(etAccountBalance.getText().toString()));
 
                 usersRef.child(user.getUid()).updateChildren(updates)
-                    .addOnSuccessListener(aVoid -> Toast.makeText(this, 
-                        "Đã cập nhật thông tin", 
+                    .addOnSuccessListener(aVoid -> Toast.makeText(this,
+                        "Đã cập nhật thông tin",
                         Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e -> Toast.makeText(this, 
-                        "Lỗi: " + e.getMessage(), 
+                    .addOnFailureListener(e -> Toast.makeText(this,
+                        "Lỗi: " + e.getMessage(),
                         Toast.LENGTH_SHORT).show());
             })
             .setNegativeButton("Hủy", null)
