@@ -69,6 +69,8 @@
         <activity
             android:name=".activity.SearchActivity"
             android:exported="false" />
+        <activity android:name=".activity.CheckoutActivity" android:exported="false"/>
+        <activity android:name=".activity.OrderDetailActivity" android:exported="false"/>
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.EditProfileActivity" />
         <activity
