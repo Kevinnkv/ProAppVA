@@ -23,8 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private LoginPagerAdapter pagerAdapter;
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener authListener;
+    private FirebaseAuth mAuth; // đối tượng xác thực firebase
+    private FirebaseAuth.AuthStateListener authListener; // lắng nghe trạng thái đăng nhập firebase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,21 +86,6 @@ public class LoginActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
     }
-
-  //  @Override
-//    protected void onStart() {
-//        super.onStart();
-//        // Kiểm tra người dùng hiện tại
-//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-//        if (currentUser != null) {
-////            startActivity(new Intent(this, MainActivity.class));
-////            finish();
-//            startActivity(new Intent(this, MainActivity.class));
-//            finish();
-//            //Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-//
-//        }
-//    }
 
 
     @Override

@@ -233,17 +233,17 @@ public class SettingActivity extends AppCompatActivity {
         MyApplication.updateUserInfo(updates, new MyApplication.UpdateCallback() {
             @Override
             public void onSuccess() {
-//                Toast.makeText(SettingActivity.this,
-//                        "Cập nhật thông tin thành công",
-//                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this,
+                        "Cập nhật thông tin thành công",
+                        Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
             public void onError(String error) {
-//                Toast.makeText(SettingActivity.this,
-//                        "Lỗi khi cập nhật thông tin: " + error,
-//                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this,
+                        "Lỗi khi cập nhật thông tin: " + error,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

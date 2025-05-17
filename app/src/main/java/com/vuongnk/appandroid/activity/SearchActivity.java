@@ -5,13 +5,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -192,11 +190,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setupSearchSuggestions() {
         List<String> suggestions = generateSearchSuggestions();
-//        ArrayAdapter<String> suggestionsAdapter = new ArrayAdapter<>(
-//                this,
-//                android.R.layout.simple_dropdown_item_1line,
-//                suggestions
-//        );
+
         // Nếu generateSearchSuggestions() trả về null, khởi tạo một list rỗng
         if (suggestions == null) {
             suggestions = new ArrayList<>();
